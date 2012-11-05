@@ -31,13 +31,13 @@ https://github.com/tuefekci/DigitalOcean-PHP-Class
 
 class Digitalocean {
 
-	var $client_id = ""; // API - CLIENT ID
-	var $api_key = ""; // API - KEY
+	var $client_id = ""; // SET HERE YOUR API - CLIENT ID
+	var $api_key = ""; // SET HERE YOUR API - KEY
 	var $api_url = "https://api.digitalocean.com"; // THE API BASE URL
 	
-	var $base_size; // THE BASIC SIZE
-	var $base_image; // THE BASIC IMAGE
-	var $base_region; // THE BASIC REGION
+	var $base_size = ""; // Set here the youre basic size when you leave parameters empty
+	var $base_image = ""; // Set here the youre basic image when you leave parameters empty
+	var $base_region = ""; // Set here the youre basic region when you leave parameters empty
 	
 	########################
 	# Base Functions
@@ -65,7 +65,7 @@ class Digitalocean {
 			}				
 			
 		} else {
-			die("Error: DigitalOcean class can't connect to api!");	
+			die("Error: Can't connect to DigitilaOcean Api!");	
 		}
 		
 		return json_decode($content);
