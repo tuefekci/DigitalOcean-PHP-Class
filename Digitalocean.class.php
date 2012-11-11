@@ -31,13 +31,13 @@ https://github.com/tuefekci/DigitalOcean-PHP-Class
 
 class Digitalocean {
 
-	var $client_id = ""; // SET HERE YOUR API - CLIENT ID
-	var $api_key = ""; // SET HERE YOUR API - KEY
+	var $client_id = ""; // API - CLIENT ID
+	var $api_key = ""; // API - KEY
 	var $api_url = "https://api.digitalocean.com"; // THE API BASE URL
 	
-	var $base_size = ""; // Set here the youre basic size when you leave parameters empty
-	var $base_image = ""; // Set here the youre basic image when you leave parameters empty
-	var $base_region = ""; // Set here the youre basic region when you leave parameters empty
+	var $base_size; // THE BASIC SIZE
+	var $base_image; // THE BASIC IMAGE
+	var $base_region; // THE BASIC REGION
 	
 	########################
 	# Base Functions
@@ -47,11 +47,11 @@ class Digitalocean {
 		
 		if(function_exists('file_get_contents')) {
 			
-			$content = file_get_contents(urlencode ($this->api_url."/".$action));
+			$content = file_get_contents($this->api_url."/".$action);
 			
 		} elseif (function_exists('fopen')) {
 			
-			$fp = fopen(urlencode ($this->api_url."/".$action),"r");
+			$fp = fopen($this->api_url."/".$action,"r");
 		
 			$content = "";
 		
@@ -65,7 +65,7 @@ class Digitalocean {
 			}				
 			
 		} else {
-			die("Error: Can't connect to DigitilaOcean Api!");	
+			die("Error: DigitalOcean class can't connect to api!");	
 		}
 		
 		return json_decode($content);
@@ -195,7 +195,12 @@ class Digitalocean {
 	# This method will return all the available regions within the Digital Ocean cloud.
 	public function getRegions() {
 		$data = $this->connectTo("regions/?client_id=".$this->client_id."&api_key=".$this->api_key);
-		return $data;
+		
+		foreach ($data->regions as $key => $value) {
+			$return[$value->id] = $value;
+		}
+		
+		return $return;
 	}	
 	
 	########################
@@ -206,7 +211,12 @@ class Digitalocean {
 	# This method returns all the available images that can be accessed by your client ID. You will have access to all public images by default, and any snapshots or backups that you have created in your own account.
 	public function getImages() {
 		$data = $this->connectTo("images/?client_id=".$this->client_id."&api_key=".$this->api_key);
-		return $data;
+		
+		foreach ($data->images as $key => $value) {
+			$return[$value->id] = $value;
+		}
+		
+		return $return;
 	}	
 	
 	# Show Image
@@ -270,7 +280,11 @@ class Digitalocean {
 	# Sizes indicate the amount of memory and processors that will be allocated to your droplet on creation.
 	public function getSizes() {
 		$data = $this->connectTo("sizes/?client_id=".$this->client_id."&api_key=".$this->api_key);
-		return $data;
+		foreach ($data->sizes as $key => $value) {
+			$return[$value->id] = $value;
+		}
+		
+		return $return;
 	}	
 
 }
