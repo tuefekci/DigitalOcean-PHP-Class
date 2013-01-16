@@ -33,13 +33,10 @@
 
 class DigitalOcean {
 
-	var $client_id = ""; // API - CLIENT ID
-	var $api_key = ""; // API - KEY
-	const API_URL = "https://api.digitalocean.com"; // THE API BASE URL
+	const API_URL = 'https://api.digitalocean.com'; // THE API BASE URL
 
-	var $base_size; // THE BASIC SIZE
-	var $base_image; // THE BASIC IMAGE
-	var $base_region; // THE BASIC REGION
+	var $clientId; // API - CLIENT ID
+	var $apiKey; // API - KEY
 
 	########################
 	# Base Functions
@@ -48,32 +45,30 @@ class DigitalOcean {
 	private function connectTo($action) {
 		$uri = DigitalOcean::API_URL . '/' . $action;
 		$uri .= strpos($uri, '?') !== true ? '?' : '&';
-		$uri .= "client_id=" . $this->client_id . "&api_key=" . $this->api_key;
+		$uri .= 'client_id=' . $this->clientId . '&api_key=' . $this->apiKey;
 
 		if (function_exists('file_get_contents')) {
-
 			$content = file_get_contents($uri);
-
 		} elseif (function_exists('fopen')) {
-
-			$fp = fopen($uri, "r");
-
-			$content = "";
+			$fp = fopen($uri, 'r');
+			$content = '';
 
 			if ($fp) {
 				while (!feof($fp)) {
-
 					$content .= fgets($fp);
-
 				}
 				fclose($fp);
 			}
-
 		} else {
-			die("Error: DigitalOcean class can't connect to api!");
+			die('Error: DigitalOcean class cannot connect to api!');
 		}
 
 		return json_decode($content);
+	}
+
+	public function __construct($clientId, $apiKey) {
+		$this->clientId = $clientId;
+		$this->apiKey = $apiKey;
 	}
 
 	########################
@@ -83,97 +78,97 @@ class DigitalOcean {
 	# Show All Active Droplets
 	# This method returns all active droplets that are currently running in your account. All available API information is presented for each droplet.
 	public function getDroplets() {
-		return $this->connectTo("droplets");
+		return $this->connectTo('droplets');
 	}
 
 	# Show Droplet
 	# This method returns full information for a specific droplet ID that is passed in the URL.
 	public function showDroplet($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id);
+		return $this->connectTo('droplets/' . $droplet_id);
 	}
 
 	# New Droplet
 	# This method returns full information for a specific droplet ID that is passed in the URL.
 	public function newDroplet($name, $size_id, $image_id, $region_id) {
-		return $this->connectTo("droplets/new?name=" . $name . "&size_id=" . $size_id . "&image_id=" . $image_id . "&region_id=" . $region_id);
+		return $this->connectTo('droplets/new?name=' . $name . '&size_id=' . $size_id . '&image_id=' . $image_id . '&region_id=' . $region_id);
 	}
 
 	# Reboot Droplet
 	# This method allows you to reboot a droplet. This is the preferred method to use if a server is not responding.
 	public function reboot($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/reboot/");
+		return $this->connectTo('droplets/' . $droplet_id . '/reboot/');
 	}
 
 	# Power Cycle Droplet
 	# This method allows you to power cycle a droplet. This will turn off the droplet and then turn it back on.
 	public function powerCycle($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/power_cycle/");
+		return $this->connectTo('droplets/' . $droplet_id . '/power_cycle/');
 	}
 
 	# Shut Down Droplet
 	# This method allows you to shutdown a running droplet. The droplet will remain in your account.
 	public function shutDown($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/shut_down/");
+		return $this->connectTo('droplets/' . $droplet_id . '/shut_down/');
 	}
 
 	# Power Off
 	# This method allows you to power off a running droplet. The droplet will remain in your account.
 	public function powerOff($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/power_off/");
+		return $this->connectTo('droplets/' . $droplet_id . '/power_off/');
 	}
 
 	# Power On
 	# This method allows you to power on a powered off droplet.
 	public function powerOn($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/power_on/");
+		return $this->connectTo('droplets/' . $droplet_id . '/power_on/');
 	}
 
 	# Reset Root Password
 	# This method will reset the root password for a droplet. Please be aware that this will reboot the droplet to allow resetting the password.
 	public function resetRootPassword($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/reset_root_password/");
+		return $this->connectTo('droplets/' . $droplet_id . '/reset_root_password/');
 	}
 
 	# Resize Droplet
 	# This method allows you to resize a specific droplet to a different size. This will affect the number of processors and memory allocated to the droplet.
 	public function resizeDroplet($droplet_id, $size_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/resize/?size_id=" . $size_id);
+		return $this->connectTo('droplets/' . $droplet_id . '/resize/?size_id=' . $size_id);
 	}
 
 	# Take a Snapshot
 	# This method allows you to resize a specific droplet to a different size. This will affect the number of processors and memory allocated to the droplet.
 	public function takeASnapshot($droplet_id, $name) {
-		return $this->connectTo("droplets/" . $droplet_id . "/snapshot/?name=" . $name);
+		return $this->connectTo('droplets/' . $droplet_id . '/snapshot/?name=' . $name);
 	}
 
 	# Restore Droplet
 	# This method allows you to resize a specific droplet to a different size. This will affect the number of processors and memory allocated to the droplet.
 	public function restore($droplet_id, $image_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/restore/?image_id=" . $image_id);
+		return $this->connectTo('droplets/' . $droplet_id . '/restore/?image_id=' . $image_id);
 	}
 
 	# Rebuild Droplet
 	# This method allows you to reinstall a droplet with a default image. This is useful if you want to start again but retain the same IP address for your droplet.
 	public function rebuild($droplet_id, $image_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/rebuild/?image_id=" . $image_id);
+		return $this->connectTo('droplets/' . $droplet_id . '/rebuild/?image_id=' . $image_id);
 	}
 
 	# Enable Automatic Backups
 	# This method enables automatic backups which run in the background daily to backup your droplet's data.
 	public function enableBackups($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/enable_backups");
+		return $this->connectTo('droplets/' . $droplet_id . '/enable_backups');
 	}
 
 	# Disable Automatic Backups
 	# This method disables automatic backups from running to backup your droplet's data.
 	public function disableBackups($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/disable_backups");
+		return $this->connectTo('droplets/' . $droplet_id . '/disable_backups');
 	}
 
 	# Destroy Droplet
 	# This method destroys one of your droplets - this is irreversible.
 	public function destroy($droplet_id) {
-		return $this->connectTo("droplets/" . $droplet_id . "/destroy");
+		return $this->connectTo('droplets/' . $droplet_id . '/destroy');
 	}
 
 	########################
@@ -183,7 +178,7 @@ class DigitalOcean {
 	# All Regions
 	# This method will return all the available regions within the Digital Ocean cloud.
 	public function getRegions() {
-		$data = $this->connectTo("regions");
+		$data = $this->connectTo('regions');
 
 		$return = array();
 		foreach ($data->regions as $value) {
@@ -199,7 +194,7 @@ class DigitalOcean {
 	# All Images
 	# This method returns all the available images that can be accessed by your client ID. You will have access to all public images by default, and any snapshots or backups that you have created in your own account.
 	public function getImages() {
-		$data = $this->connectTo("images");
+		$data = $this->connectTo('images');
 
 		$return = array();
 		foreach ($data->images as $value) {
@@ -211,13 +206,13 @@ class DigitalOcean {
 	# Show Image
 	# This method displays the attributes of an image.
 	public function showImage($image_id) {
-		return $this->connectTo("images/" . $image_id);
+		return $this->connectTo('images/' . $image_id);
 	}
 
 	# Destroy Image
 	# This method allows you to destroy an image. There is no way to restore a deleted image so be careful and ensure your data is properly backed up.
 	public function destroyImage($image_id) {
-		return $this->connectTo("images/" . $image_id . "/destroy");
+		return $this->connectTo('images/' . $image_id . '/destroy');
 	}
 
 	########################
@@ -227,31 +222,31 @@ class DigitalOcean {
 	# All SSH Keys
 	# This method lists all the available public SSH keys in your account that can be added to a droplet.
 	public function getSSHKeys() {
-		return $this->connectTo("ssh_keys");
+		return $this->connectTo('ssh_keys');
 	}
 
 	# Show SSH Key
 	# This method shows a specific public SSH key in your account that can be added to a droplet.
 	public function showSSHKey($ssh_key_id) {
-		return $this->connectTo("ssh_keys/" . $ssh_key_id);
+		return $this->connectTo('ssh_keys/' . $ssh_key_id);
 	}
 
 	# Add SSH Key
 	# This method allows you to add a new public SSH key to your account.
 	public function addSSHKey($ssh_key_id) {
-		return $this->connectTo("ssh_keys/" . $ssh_key_id . "/add");
+		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/add');
 	}
 
 	# Edit SSH Key
 	# This method allows you to modify an existing public SSH key in your account.
 	public function editSSHKey($ssh_key_id) {
-		return $this->connectTo("ssh_keys/" . $ssh_key_id . "/edit");
+		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/edit');
 	}
 
 	# Destroy SSH Key
 	# This method will delete the SSH key from your account.
 	public function destroySSHKey($ssh_key_id) {
-		return $this->connectTo("ssh_keys/" . $ssh_key_id . "/destroy");
+		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/destroy');
 	}
 
 	########################
@@ -261,7 +256,7 @@ class DigitalOcean {
 	# Sizes
 	# Sizes indicate the amount of memory and processors that will be allocated to your droplet on creation.
 	public function getSizes() {
-		$data = $this->connectTo("sizes");
+		$data = $this->connectTo('sizes');
 
 		$return = array();
 		foreach ($data->sizes as $value) {
