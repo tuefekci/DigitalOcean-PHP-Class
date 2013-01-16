@@ -196,10 +196,10 @@ class DigitalOcean {
 	public function getRegions() {
 		$data = $this->connectTo("regions/?client_id=".$this->client_id."&api_key=".$this->api_key);
 
-		foreach ($data->regions as $key => $value) {
+		$return = array();
+		foreach ($data->regions as $value) {
 			$return[$value->id] = $value;
 		}
-
 		return $return;
 	}	
 	
@@ -212,10 +212,10 @@ class DigitalOcean {
 	public function getImages() {
 		$data = $this->connectTo("images/?client_id=".$this->client_id."&api_key=".$this->api_key);
 
-		foreach ($data->images as $key => $value) {
+		$return = array();
+		foreach ($data->images as $value) {
 			$return[$value->id] = $value;
 		}
-
 		return $return;
 	}	
 	
@@ -280,10 +280,11 @@ class DigitalOcean {
 	# Sizes indicate the amount of memory and processors that will be allocated to your droplet on creation.
 	public function getSizes() {
 		$data = $this->connectTo("sizes/?client_id=".$this->client_id."&api_key=".$this->api_key);
-		foreach ($data->sizes as $key => $value) {
+
+		$return = array();
+		foreach ($data->sizes as $value) {
 			$return[$value->id] = $value;
 		}
-
 		return $return;
 	}	
 
