@@ -1,4 +1,5 @@
 <?php
+require_once 'ApiConnector.class.php';
 
 /*************************************************
  * DigitalOcean PHP Class
@@ -47,21 +48,8 @@ class DigitalOcean {
 		$uri .= strpos($uri, '?') !== true ? '?' : '&';
 		$uri .= 'client_id=' . $this->clientId . '&api_key=' . $this->apiKey;
 
-		if (function_exists('file_get_contents')) {
-			$content = file_get_contents($uri);
-		} elseif (function_exists('fopen')) {
-			$fp = fopen($uri, 'r');
-			$content = '';
-
-			if ($fp) {
-				while (!feof($fp)) {
-					$content .= fgets($fp);
-				}
-				fclose($fp);
-			}
-		} else {
-			die('Error: DigitalOcean class cannot connect to api!');
-		}
+		$apiConnector = new ApiConnector();
+		$content = $apiConnector->connectToApi($uri);
 
 		return json_decode($content);
 	}
