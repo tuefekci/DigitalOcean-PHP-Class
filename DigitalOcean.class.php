@@ -1,5 +1,4 @@
 <?php
-require_once 'ApiConnector.class.php';
 
 /*************************************************
  * DigitalOcean PHP Class
@@ -36,8 +35,24 @@ class DigitalOcean {
 
 	const API_URL = 'https://api.digitalocean.com'; // THE API BASE URL
 
-	var $clientId; // API - CLIENT ID
-	var $apiKey; // API - KEY
+	/**
+	 * @var string
+	 */
+	private $clientId; // API - CLIENT ID
+
+	/**
+	 * @var string
+	 */
+	private $apiKey; // API - KEY
+
+	/**
+	 * @var ApiConnector
+	 */
+	private $apiConnector;
+
+	public function setApiConnector($apiConnector) {
+		$this->apiConnector = $apiConnector;
+	}
 
 	########################
 	# Base Functions
@@ -48,10 +63,7 @@ class DigitalOcean {
 		$uri .= strpos($uri, '?') !== true ? '?' : '&';
 		$uri .= 'client_id=' . $this->clientId . '&api_key=' . $this->apiKey;
 
-		$apiConnector = new ApiConnector();
-		$content = $apiConnector->connectToApi($uri);
-
-		return json_decode($content);
+		return json_decode($this->apiConnector->connectToApi($uri));
 	}
 
 	public function __construct($clientId, $apiKey) {
@@ -253,4 +265,27 @@ class DigitalOcean {
 		return $return;
 	}
 
+}
+
+class ApiConnector {
+	function connectToApi($uri) {
+		if (function_exists('file_get_contents')) {
+			$content = file_get_contents($uri);
+			return $content;
+		} elseif (function_exists('fopen')) {
+			$fp = fopen($uri, 'r');
+			$content = '';
+
+			if ($fp) {
+				while (!feof($fp)) {
+					$content .= fgets($fp);
+				}
+				fclose($fp);
+				return $content;
+			}
+			return $content;
+		} else {
+			throw new RuntimeException('Error: DigitalOcean class cannot connect to api!');
+		}
+	}
 }
