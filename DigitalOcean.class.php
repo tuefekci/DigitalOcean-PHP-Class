@@ -60,7 +60,7 @@ class DigitalOcean {
 
 	private function connectTo($action) {
 		$uri = DigitalOcean::API_URL . '/' . $action;
-		$uri .= strpos($uri, '?') !== true ? '?' : '&';
+		$uri .= strpos($uri, '?') !== false ? '&' : '?';
 		$uri .= 'client_id=' . $this->clientId . '&api_key=' . $this->apiKey;
 
 		return json_decode($this->apiConnector->connectToApi($uri));
@@ -78,13 +78,13 @@ class DigitalOcean {
 	# Show All Active Droplets
 	# This method returns all active droplets that are currently running in your account. All available API information is presented for each droplet.
 	public function getDroplets() {
-		return $this->connectTo('droplets');
+		return $this->connectTo('droplets/');
 	}
 
 	# Show Droplet
 	# This method returns full information for a specific droplet ID that is passed in the URL.
 	public function showDroplet($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id);
+		return $this->connectTo('droplets/' . $droplet_id . '/');
 	}
 
 	# New Droplet
@@ -156,19 +156,19 @@ class DigitalOcean {
 	# Enable Automatic Backups
 	# This method enables automatic backups which run in the background daily to backup your droplet's data.
 	public function enableBackups($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/enable_backups');
+		return $this->connectTo('droplets/' . $droplet_id . '/enable_backups/');
 	}
 
 	# Disable Automatic Backups
 	# This method disables automatic backups from running to backup your droplet's data.
 	public function disableBackups($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/disable_backups');
+		return $this->connectTo('droplets/' . $droplet_id . '/disable_backups/');
 	}
 
 	# Destroy Droplet
 	# This method destroys one of your droplets - this is irreversible.
 	public function destroy($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/destroy');
+		return $this->connectTo('droplets/' . $droplet_id . '/destroy/');
 	}
 
 	########################
@@ -178,7 +178,7 @@ class DigitalOcean {
 	# All Regions
 	# This method will return all the available regions within the Digital Ocean cloud.
 	public function getRegions() {
-		$data = $this->connectTo('regions');
+		$data = $this->connectTo('regions/');
 
 		$return = array();
 		foreach ($data->regions as $value) {
@@ -194,7 +194,7 @@ class DigitalOcean {
 	# All Images
 	# This method returns all the available images that can be accessed by your client ID. You will have access to all public images by default, and any snapshots or backups that you have created in your own account.
 	public function getImages() {
-		$data = $this->connectTo('images');
+		$data = $this->connectTo('images/');
 
 		$return = array();
 		foreach ($data->images as $value) {
@@ -206,13 +206,13 @@ class DigitalOcean {
 	# Show Image
 	# This method displays the attributes of an image.
 	public function showImage($image_id) {
-		return $this->connectTo('images/' . $image_id);
+		return $this->connectTo('images/' . $image_id . '/');
 	}
 
 	# Destroy Image
 	# This method allows you to destroy an image. There is no way to restore a deleted image so be careful and ensure your data is properly backed up.
 	public function destroyImage($image_id) {
-		return $this->connectTo('images/' . $image_id . '/destroy');
+		return $this->connectTo('images/' . $image_id . '/destroy/');
 	}
 
 	########################
@@ -222,31 +222,31 @@ class DigitalOcean {
 	# All SSH Keys
 	# This method lists all the available public SSH keys in your account that can be added to a droplet.
 	public function getSSHKeys() {
-		return $this->connectTo('ssh_keys');
+		return $this->connectTo('ssh_keys/');
 	}
 
 	# Show SSH Key
 	# This method shows a specific public SSH key in your account that can be added to a droplet.
 	public function showSSHKey($ssh_key_id) {
-		return $this->connectTo('ssh_keys/' . $ssh_key_id);
+		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/');
 	}
 
 	# Add SSH Key
 	# This method allows you to add a new public SSH key to your account.
 	public function addSSHKey($ssh_key_id) {
-		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/add');
+		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/add/');
 	}
 
 	# Edit SSH Key
 	# This method allows you to modify an existing public SSH key in your account.
 	public function editSSHKey($ssh_key_id) {
-		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/edit');
+		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/edit/');
 	}
 
 	# Destroy SSH Key
 	# This method will delete the SSH key from your account.
 	public function destroySSHKey($ssh_key_id) {
-		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/destroy');
+		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/destroy/');
 	}
 
 	########################
@@ -256,7 +256,7 @@ class DigitalOcean {
 	# Sizes
 	# Sizes indicate the amount of memory and processors that will be allocated to your droplet on creation.
 	public function getSizes() {
-		$data = $this->connectTo('sizes');
+		$data = $this->connectTo('sizes/');
 
 		$return = array();
 		foreach ($data->sizes as $value) {
