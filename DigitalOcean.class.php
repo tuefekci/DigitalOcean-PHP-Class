@@ -1,4 +1,5 @@
 <?php
+namespace DigitalOceanAPI;
 
 /**
  * DigitalOcean PHP Class
@@ -400,7 +401,7 @@ class ApiConnector {
 	 * Send command to the API
 	 * @param $uri
 	 * @return mixed
-	 * @throws RuntimeException if no connection methods were found
+	 * @throws \RuntimeException if no connection methods were found
 	 */
 	function connectToApi($uri) {
 		if (function_exists('file_get_contents')) {
@@ -419,7 +420,7 @@ class ApiConnector {
 			}
 			return $content;
 		} else {
-			throw new RuntimeException('Error: DigitalOcean class cannot connect to api!');
+			throw new \RuntimeException('Error: DigitalOcean class cannot connect to api!');
 		}
 	}
 }

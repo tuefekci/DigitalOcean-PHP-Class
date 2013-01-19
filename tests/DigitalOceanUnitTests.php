@@ -1,4 +1,6 @@
 <?php
+namespace DigitalOceanAPI\test;
+
 /*************************************************
  * DigitalOcean Unit Test Class
  *
@@ -23,22 +25,22 @@
  *************************************************/
 require_once('../DigitalOcean.class.php');
 
-class DigitalOceanUnitTests extends PHPUnit_Framework_TestCase {
+class DigitalOceanUnitTests extends \PHPUnit_Framework_TestCase {
 	const CLIENT_ID = "test-client-id";
 	const API_KEY = "test-api-key";
 
 	/**
-	 * @var DigitalOcean
+	 * @var \DigitalOceanApi\DigitalOcean
 	 */
 	private $digitalOcean;
 
 	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject
+	 * @var \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $apiConnector;
 
 	protected function setUp() {
-		$this->digitalOcean = new DigitalOcean(DigitalOceanUnitTests::CLIENT_ID, DigitalOceanUnitTests::API_KEY);
+		$this->digitalOcean = new \DigitalOceanApi\DigitalOcean(DigitalOceanUnitTests::CLIENT_ID, DigitalOceanUnitTests::API_KEY);
 		$this->apiConnector = $this->getMock('ApiConnector', array('connectToApi'));
 		$this->digitalOcean->setApiConnector($this->apiConnector);
 	}
