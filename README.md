@@ -1,8 +1,8 @@
 PHP wrapper for the Digital Ocean API
 =====================================
 
-This is a PHP wrapper class of the [https://www.digitalocean.com/](Digital Ocean) API. All methods are supported.
+This is a PHP wrapper class of the [Digital Ocean](https://www.digitalocean.com/) API. All methods are supported.
 
-Documentation for the [https://www.digitalocean.com/api](Digital Ocean API) can be found here.
+Documentation for the [Digital Ocean API](https://www.digitalocean.com/api) can be found here.
 
-[http://remmelt.github.com/DigitalOcean-PHP-Class](Automatically generated phpDoc) live here.
+[Automatically generated phpDoc](http://remmelt.github.com/DigitalOcean-PHP-Class) live here.
