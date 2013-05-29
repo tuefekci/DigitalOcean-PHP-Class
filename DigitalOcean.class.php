@@ -401,13 +401,19 @@ class ApiConnector {
 	 * Send command to the API
 	 * @param $uri
 	 * @return mixed
-	 * @throws \RuntimeException if no connection methods were found
+	 * @throws \RuntimeException if no connection methods were found or allow_url_include is disabled.
 	 */
 	function connectToApi($uri) {
+		if (!ini_get('allow_url_fopen')) {
+			throw new \RuntimeException('Error: allow_url_include disabled!');
+		}
+		
 		if (function_exists('file_get_contents')) {
 			$content = file_get_contents($uri);
 			return $content;
-		} elseif (function_exists('fopen')) {
+		} 
+		
+		if (function_exists('fopen')) {
 			$fp = fopen($uri, 'r');
 			$content = '';
 
@@ -419,8 +425,8 @@ class ApiConnector {
 				return $content;
 			}
 			return $content;
-		} else {
-			throw new \RuntimeException('Error: DigitalOcean class cannot connect to api!');
-		}
+		} 
+		
+		throw new \RuntimeException('Error: DigitalOcean class cannot connect to api!');
 	}
 }
