@@ -76,8 +76,8 @@ class DigitalOcean {
 	 * @param String $apiKey
 	 */
 	public function __construct($clientId, $apiKey) {
-		$this->client_id = $clientId;
-		$this->api_key = $apiKey;
+		$this->clientId = $clientId;
+		$this->apiKey = $apiKey;
 	}
 
 	/**
@@ -88,7 +88,7 @@ class DigitalOcean {
 	private function connectTo($action) {
 		$uri = DigitalOcean::API_URL . '/' . $action;
 		$uri .= strpos($uri, '?') !== false ? '&' : '?';
-		$uri .= 'client_id=' . $this->client_id . '&api_key=' . $this->api_key;
+		$uri .= 'client_id=' . $this->clientId . '&api_key=' . $this->apiKey;
 
 		return json_decode($this->apiConnector->connectToApi($uri));
 	}
