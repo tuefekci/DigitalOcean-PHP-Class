@@ -114,7 +114,7 @@ class DigitalOceanUnitTests extends \PHPUnit_Framework_TestCase {
 
 	public function testResetRootPassword() {
 		$dropletId = 1234;
-		$expectedParameter = 'https://api.digitalocean.com/droplets/1234/reset_root_password/?client_id=test-client-id&api_key=test-api-key';
+		$expectedParameter = 'https://api.digitalocean.com/droplets/1234/password_reset/?client_id=test-client-id&api_key=test-api-key';
 		$this->initMock($expectedParameter);
 		$this->digitalOcean->resetRootPassword($dropletId);
 	}
@@ -180,7 +180,7 @@ class DigitalOceanUnitTests extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetImages() {
-		$expectedParameter = 'https://api.digitalocean.com/images/?client_id=test-client-id&api_key=test-api-key';
+		$expectedParameter = 'https://api.digitalocean.com/images/?filter=my_images&client_id=test-client-id&api_key=test-api-key';
 		$json = '{"status":"OK","images":[{"id":429,"name":"Real Backup 10242011","distribution":"Ubuntu"},{"id":430,"name":"test233","distribution":"Ubuntu"},{"id":431,"name":"test888","distribution":"Ubuntu"},{"id":442,"name":"tesah22","distribution":"Ubuntu"},{"id":443,"name":"testah33","distribution":"Ubuntu"},{"id":444,"name":"testah44","distribution":"Ubuntu"},{"id":447,"name":"ahtest55","distribution":"Ubuntu"},{"id":448,"name":"ahtest66","distribution":"Ubuntu"},{"id":449,"name":"ahtest77","distribution":"Ubuntu"},{"id":458,"name":"Rails3-1Ruby1-9-2","distribution":"Ubuntu"},{"id":466,"name":"NYTD Backup 1-18-2012","distribution":"Ubuntu"},{"id":478,"name":"NLP Final","distribution":"Ubuntu"},{"id":540,"name":"API - Final","distribution":"Ubuntu"},{"id":577,"name":"test1-1","distribution":"Ubuntu"},{"id":578,"name":"alec snapshot1","distribution":"Ubuntu"}]}';
 		$this->initMock($expectedParameter, $json);
 		$this->digitalOcean->getImages();
@@ -202,7 +202,8 @@ class DigitalOceanUnitTests extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSSHKeys() {
 		$expectedParameter = 'https://api.digitalocean.com/ssh_keys/?client_id=test-client-id&api_key=test-api-key';
-		$this->initMock($expectedParameter);
+		$json = '{"status":"OK","ssh_keys":[{"id": 10,"name": "office-imac"},{"id": 11,"name": "macbook-air"}]}';
+		$this->initMock($expectedParameter, $json);
 		$this->digitalOcean->getSSHKeys();
 	}
 
@@ -215,16 +216,19 @@ class DigitalOceanUnitTests extends \PHPUnit_Framework_TestCase {
 
 	public function testAddSSHKey() {
 		$sshKeyId = 321;
-		$expectedParameter = 'https://api.digitalocean.com/ssh_keys/321/add/?client_id=test-client-id&api_key=test-api-key';
+		$name = 'name';
+		$ssh_key_pub = 'ssh_key_pub';
+		$expectedParameter = 'https://api.digitalocean.com/ssh_keys/321/new/?name=name&ssh_key_pub=ssh_key_pub&client_id=test-client-id&api_key=test-api-key';
 		$this->initMock($expectedParameter);
-		$this->digitalOcean->addSSHKey($sshKeyId);
+		$this->digitalOcean->addSSHKey($sshKeyId, $name, $ssh_key_pub);
 	}
 
 	public function testEditSSHKey() {
 		$sshKeyId = 321;
-		$expectedParameter = 'https://api.digitalocean.com/ssh_keys/321/edit/?client_id=test-client-id&api_key=test-api-key';
+		$ssh_key_pub = 'ssh_key_pub';
+		$expectedParameter = 'https://api.digitalocean.com/ssh_keys/321/edit/?ssh_key_pub=ssh_key_pub&client_id=test-client-id&api_key=test-api-key';
 		$this->initMock($expectedParameter);
-		$this->digitalOcean->editSSHKey($sshKeyId);
+		$this->digitalOcean->editSSHKey($sshKeyId, $ssh_key_pub);
 	}
 
 	public function testDestroySSHKey() {
