@@ -44,13 +44,13 @@ class DigitalOcean {
 	 * The Client ID as provided by Digital Ocean
 	 * @var string
 	 */
-	private $client_id; // API - CLIENT ID
+	private $clientId; // API - CLIENT ID
 
 	/**
 	 * The API key as provided by Digital Ocean
 	 * @var string
 	 */
-	private $api_key; // API - KEY
+	private $apiKey; // API - KEY
 
 	/**
 	 * External connection class to facilitate testing
@@ -72,12 +72,12 @@ class DigitalOcean {
 
 	/**
 	 * Constructor
-	 * @param String $client_id
-	 * @param String $api_key
+	 * @param String $clientId
+	 * @param String $apiKey
 	 */
-	public function __construct($client_id, $api_key) {
-		$this->client_id = $client_id;
-		$this->api_key = $api_key;
+	public function __construct($clientId, $apiKey) {
+		$this->client_id = $clientId;
+		$this->api_key = $apiKey;
 	}
 
 	/**
@@ -110,169 +110,169 @@ class DigitalOcean {
 	 * New Droplet
 	 * This method returns full information for a specific droplet ID that is passed in the URL.
 	 * @param string $name
-	 * @param int $size_id
-	 * @param int $image_id
-	 * @param int $region_id
+	 * @param int $sizeId
+	 * @param int $imageId
+	 * @param int $regionId
 	 * @return mixed
 	 */
-	public function newDroplet($name, $size_id, $image_id, $region_id, $ssh_key_ids = NULL) {
-		return $this->connectTo('droplets/new?name=' . $name . '&size_id=' . $size_id . '&image_id=' . $image_id . '&region_id=' . $region_id . 
-			(is_null($ssh_key_ids) ? '' : '&ssh_key_ids=' . $ssh_key_ids));
+	public function newDroplet($name, $sizeId, $imageId, $regionId, $sshKeyIds = NULL) {
+		return $this->connectTo('droplets/new?name=' . $name . '&size_id=' . $sizeId . '&image_id=' . $imageId . '&region_id=' . $regionId . 
+			(is_null($sshKeyIds) ? '' : '&ssh_key_ids=' . $sshKeyIds));
 	}
 
 	/**
 	 * Show Droplet
 	 * This method returns full information for a specific droplet ID that is passed in the URL.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function showDroplet($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/');
+	public function showDroplet($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/');
 	}
 
 	/**
 	 * Reboot Droplet
 	 * This method allows you to reboot a droplet. This is the preferred method to use if a server is not responding.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function reboot($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/reboot/');
+	public function reboot($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/reboot/');
 	}
 
 	/**
 	 * Power Cycle Droplet
 	 * This method allows you to power cycle a droplet. This will turn off the droplet and then turn it back on.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function powerCycle($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/power_cycle/');
+	public function powerCycle($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/power_cycle/');
 	}
 
 	/**
 	 * Shut Down Droplet
 	 * This method allows you to shutdown a running droplet. The droplet will remain in your account.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function shutDown($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/shut_down/');
+	public function shutDown($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/shut_down/');
 	}
 
 	/**
 	 * Power Off
 	 * This method allows you to power off a running droplet. The droplet will remain in your account.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function powerOff($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/power_off/');
+	public function powerOff($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/power_off/');
 	}
 
 	/**
 	 * Power On
 	 * This method allows you to power on a powered off droplet.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function powerOn($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/power_on/');
+	public function powerOn($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/power_on/');
 	}
 
 	/**
 	 * Reset Root Password
 	 * This method will reset the root password for a droplet. Please be aware that this will reboot the droplet to allow resetting the password.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function resetRootPassword($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/password_reset/');
+	public function resetRootPassword($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/password_reset/');
 	}
 
 	/**
 	 * Resize Droplet
 	 * This method allows you to resize a specific droplet to a different size. This will affect the number of processors and memory allocated to the droplet.
-	 * @param int $droplet_id
-	 * @param int $size_id
+	 * @param int $dropletId
+	 * @param int $sizeId
 	 * @return mixed
 	 */
-	public function resizeDroplet($droplet_id, $size_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/resize/?size_id=' . $size_id);
+	public function resizeDroplet($dropletId, $sizeId) {
+		return $this->connectTo('droplets/' . $dropletId . '/resize/?size_id=' . $sizeId);
 	}
 
 	/**
 	 * Take a Snapshot
 	 * This method allows you to resize a specific droplet to a different size. This will affect the number of processors and memory allocated to the droplet.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @param string $name
 	 * @return mixed
 	 */
-	public function takeASnapshot($droplet_id, $name = NULL) {
-		return $this->connectTo('droplets/' . $droplet_id . '/snapshot/' . (is_null($name) ? '' : '?name=' . $name));
+	public function takeASnapshot($dropletId, $name = NULL) {
+		return $this->connectTo('droplets/' . $dropletId . '/snapshot/' . (is_null($name) ? '' : '?name=' . $name));
 	}
 
 	/**
 	 * Restore Droplet
 	 * This method allows you to resize a specific droplet to a different size. This will affect the number of processors and memory allocated to the droplet.
-	 * @param int $droplet_id
-	 * @param int $image_id
+	 * @param int $dropletId
+	 * @param int $imageId
 	 * @return mixed
 	 */
-	public function restore($droplet_id, $image_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/restore/?image_id=' . $image_id);
+	public function restore($dropletId, $imageId) {
+		return $this->connectTo('droplets/' . $dropletId . '/restore/?image_id=' . $imageId);
 	}
 
 	/**
 	 * Rebuild Droplet
 	 * This method allows you to reinstall a droplet with a default image. This is useful if you want to start again but retain the same IP address for your droplet.
-	 * @param int $droplet_id
-	 * @param int $image_id
+	 * @param int $dropletId
+	 * @param int $imageId
 	 * @return mixed
 	 */
-	public function rebuild($droplet_id, $image_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/rebuild/?image_id=' . $image_id);
+	public function rebuild($dropletId, $imageId) {
+		return $this->connectTo('droplets/' . $dropletId . '/rebuild/?image_id=' . $imageId);
 	}
 
 	/**
 	 * Enable Automatic Backups
 	 * This method enables automatic backups which run in the background daily to backup your droplet's data.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function enableBackups($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/enable_backups/');
+	public function enableBackups($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/enable_backups/');
 	}
 
 	/**
 	 * Disable Automatic Backups
 	 * This method disables automatic backups from running to backup your droplet's data.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function disableBackups($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/disable_backups/');
+	public function disableBackups($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/disable_backups/');
 	}
 
 	/**
 	 * Rename Droplet
 	 * This method renames the droplet to the specified name.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @param string $name
 	 * @return mixed
 	 */
-	public function rename($droplet_id, $name) {
-		return $this->connectTo('droplets/' . $droplet_id . '/rename/?name=' . $name);
+	public function rename($dropletId, $name) {
+		return $this->connectTo('droplets/' . $dropletId . '/rename/?name=' . $name);
 	}
 
 	/**
 	 * Destroy Droplet
 	 * This method destroys one of your droplets - this is irreversible.
-	 * @param int $droplet_id
+	 * @param int $dropletId
 	 * @return mixed
 	 */
-	public function destroy($droplet_id) {
-		return $this->connectTo('droplets/' . $droplet_id . '/destroy/');
+	public function destroy($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/destroy/');
 	}
 
 	########################
@@ -317,32 +317,32 @@ class DigitalOcean {
 	/**
 	 * Show Image
 	 * This method displays the attributes of an image.
-	 * @param int $image_id
+	 * @param int $imageId
 	 * @return mixed
 	 */
-	public function showImage($image_id) {
-		return $this->connectTo('images/' . $image_id . '/');
+	public function showImage($imageId) {
+		return $this->connectTo('images/' . $imageId . '/');
 	}
 
 	/**
 	 * Destroy Image
 	 * This method allows you to destroy an image. There is no way to restore a deleted image so be careful and ensure your data is properly backed up.
-	 * @param int $image_id
+	 * @param int $imageId
 	 * @return mixed
 	 */
-	public function destroyImage($image_id) {
-		return $this->connectTo('images/' . $image_id . '/destroy/');
+	public function destroyImage($imageId) {
+		return $this->connectTo('images/' . $imageId . '/destroy/');
 	}
 
 	/**
 	 * Transfer Image
 	 * This method allows you to transfer an image to a specified region.
-	 * @param int $image_id
-	 * @param int $region_id
+	 * @param int $imageId
+	 * @param int $regionId
 	 * @return mixed
 	 */
-	public function transferImage($image_id, $region_id) {
-		return $this->connectTo('images/' . $image_id . '/transfer/?region_id=' . $region_id);
+	public function transferImage($imageId, $regionId) {
+		return $this->connectTo('images/' . $imageId . '/transfer/?region_id=' . $regionId);
 	}
 
 	########################
@@ -367,41 +367,41 @@ class DigitalOcean {
 	/**
 	 * Add SSH Key
 	 * This method allows you to add a new public SSH key to your account.
-	 * @param int $ssh_key_id
+	 * @param int $sshKeyId
 	 * @return mixed
 	 */
-	public function addSSHKey($ssh_key_id, $name, $ssh_key_pub) {
-		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/new/?name=' . $name . '&ssh_key_pub=' . $ssh_key_pub);
+	public function addSSHKey($sshKeyId, $name, $sshKeyPub) {
+		return $this->connectTo('ssh_keys/' . $sshKeyId . '/new/?name=' . $name . '&ssh_key_pub=' . $sshKeyPub);
 	}
 
 	/**
 	 * Show SSH Key
 	 * This method shows a specific public SSH key in your account that can be added to a droplet.
-	 * @param int $ssh_key_id
+	 * @param int $sshKeyId
 	 * @return mixed
 	 */
-	public function showSSHKey($ssh_key_id) {
-		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/');
+	public function showSSHKey($sshKeyId) {
+		return $this->connectTo('ssh_keys/' . $sshKeyId . '/');
 	}
 
 	/**
 	 * Edit SSH Key
 	 * This method allows you to modify an existing public SSH key in your account.
-	 * @param int $ssh_key_id
+	 * @param int $sshKeyId
 	 * @return mixed
 	 */
-	public function editSSHKey($ssh_key_id, $ssh_key_pub) {
-		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/edit/?ssh_key_pub=' . $ssh_key_pub);
+	public function editSSHKey($sshKeyId, $sshKeyPub) {
+		return $this->connectTo('ssh_keys/' . $sshKeyId . '/edit/?ssh_key_pub=' . $sshKeyPub);
 	}
 
 	/**
 	 * Destroy SSH Key
 	 * This method will delete the SSH key from your account.
-	 * @param int $ssh_key_id
+	 * @param int $sshKeyId
 	 * @return mixed
 	 */
-	public function destroySSHKey($ssh_key_id) {
-		return $this->connectTo('ssh_keys/' . $ssh_key_id . '/destroy/');
+	public function destroySSHKey($sshKeyId) {
+		return $this->connectTo('ssh_keys/' . $sshKeyId . '/destroy/');
 	}
 
 	########################
@@ -446,41 +446,41 @@ class DigitalOcean {
 	 * New Domain
 	 * This method creates a new domain name with an A record for the specified [ip_address].
 	 * @param string $name
-	 * @param string $ip_address
+	 * @param string $ipAddress
 	 * @return mixed
 	 */
-	public function newDomain($name, $ip_address) {
-		return $this->connectTo('domains/new/?name=' . $name . '&ip_address=' . $ip_address);
+	public function newDomain($name, $ipAddress) {
+		return $this->connectTo('domains/new/?name=' . $name . '&ip_address=' . $ipAddress);
 	}
 
 	/**
 	 * Show Domain
 	 * This method returns the specified domain.
-	 * @param string $domain_id
+	 * @param string $domainId
 	 * @return mixed
 	 */
-	public function showDomain($domain_id) {
-		return $this->connectTo('domains/' . $domain_id . '/');
+	public function showDomain($domainId) {
+		return $this->connectTo('domains/' . $domainId . '/');
 	}
 
 	/**
 	 * Destroy Domain
 	 * This method deletes the specified domain.
-	 * @param string $domain_id
+	 * @param string $domainId
 	 * @return mixed
 	 */
-	public function destroyDomain($domain_id) {
-		return $this->connectTo('domains/' . $domain_id . '/destroy/');
+	public function destroyDomain($domainId) {
+		return $this->connectTo('domains/' . $domainId . '/destroy/');
 	}
 
 	/**
 	 * All Domain Records
 	 * This method returns all of your current domain records.
-	 * @param string $domain_id
+	 * @param string $domainId
 	 * @return mixed
 	 */
-	public function getDomainRecords($domain_id) {
-		$data = $this->connectTo('domains/' . $domain_id . '/records/');
+	public function getDomainRecords($domainId) {
+		$data = $this->connectTo('domains/' . $domainId . '/records/');
 
 		$return = array();
 		foreach ($data->records as $value) {
@@ -492,8 +492,8 @@ class DigitalOcean {
 	/**
 	 * New Domain Record
 	 * This method creates a new domain record for the specified domain.
-	 * @param string $domain_id
-	 * @param string $record_type
+	 * @param string $domainId
+	 * @param string $recordType
 	 * @param string $data
 	 * @param string $name
 	 * @param int $priority
@@ -501,8 +501,8 @@ class DigitalOcean {
 	 * @param int $weight
 	 * @return mixed
 	 */
-	public function newDomainRecord($domain_id, $record_type, $data, $name = NULL, $priority = NULL, $port = NULL, $weight = NULL) {
-		return $this->connectTo('domains/' . $domain_id . '/records/new/?record_type=' . $record_type . '&data=' . $data . 
+	public function newDomainRecord($domainId, $recordType, $data, $name = NULL, $priority = NULL, $port = NULL, $weight = NULL) {
+		return $this->connectTo('domains/' . $domainId . '/records/new/?record_type=' . $recordType . '&data=' . $data . 
 			(is_null($name) ? '' : '&name=' . $name) . 
 			(is_null($priority) ? '' : '&priority=' . $priority) . 
 			(is_null($port) ? '' : '&port=' . $port) . 
@@ -512,20 +512,20 @@ class DigitalOcean {
 	/**
 	 * Show Domain Record
 	 * This method returns the specified domain record.
-	 * @param string $domain_id
-	 * @param int $record_id
+	 * @param string $domainId
+	 * @param int $recordId
 	 * @return mixed
 	 */
-	public function showDomainRecord($domain_id, $record_id) {
-		return $this->connectTo('domains/' . $domain_id . '/records/' . $record_id . '/');
+	public function showDomainRecord($domainId, $recordId) {
+		return $this->connectTo('domains/' . $domainId . '/records/' . $recordId . '/');
 	}
 
 	/**
 	 * Edit Domain Record
 	 * This method edits an existing domain record.
-	 * @param string $domain_id
-	 * @param int $record_id
-	 * @param string $record_type
+	 * @param string $domainId
+	 * @param int $recordId
+	 * @param string $recordType
 	 * @param string $data
 	 * @param string $name
 	 * @param int $priority
@@ -533,8 +533,8 @@ class DigitalOcean {
 	 * @param int $weight
 	 * @return mixed
 	 */
-	public function editDomainRecord($domain_id, $record_id, $record_type, $data, $name = NULL, $priority = NULL, $port = NULL, $weight = NULL) {
-		return $this->connectTo('domains/' . $domain_id . '/records/' . $record_id . '/edit/?record_type=' . $record_type . '&data=' . $data . 
+	public function editDomainRecord($domainId, $recordId, $recordType, $data, $name = NULL, $priority = NULL, $port = NULL, $weight = NULL) {
+		return $this->connectTo('domains/' . $domainId . '/records/' . $recordId . '/edit/?record_type=' . $recordType . '&data=' . $data . 
 			(is_null($name) ? '' : '&name=' . $name) . 
 			(is_null($priority) ? '' : '&priority=' . $priority) . 
 			(is_null($port) ? '' : '&port=' . $port) . 
@@ -544,12 +544,12 @@ class DigitalOcean {
 	/**
 	 * Destroy Domain Record
 	 * This method deletes the specified domain record.
-	 * @param string $domain_id
-	 * @param int $record_id
+	 * @param string $domainId
+	 * @param int $recordId
 	 * @return mixed
 	 */
-	public function destroyDomainRecord($domain_id, $record_id) {
-		return $this->connectTo('domains/' . $domain_id . '/records/' . $record_id . '/destroy/');
+	public function destroyDomainRecord($domainId, $recordId) {
+		return $this->connectTo('domains/' . $domainId . '/records/' . $recordId . '/destroy/');
 	}
 
 }
