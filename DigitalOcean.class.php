@@ -6,10 +6,12 @@ namespace DigitalOceanAPI;
  *
  * Author: Giacomo Tüfekci <giacomo.tuefekci@googlemail.com>
  * Additions: Remmelt Pit <remmelt@gmail.com>
+ * Additions: Sean Fleming <smenus@me.com>
  *
  * Copyright (c): 2012 Is.It.Media, all rights reserved
  * Version: 1.0.0 - 2012-10-26
  * Version: 1.1.0 - 2013-01-16
+ * Version: 1.2.0 - 2013-07-02
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -105,16 +107,6 @@ class DigitalOcean {
 	}
 
 	/**
-	 * Show Droplet
-	 * This method returns full information for a specific droplet ID that is passed in the URL.
-	 * @param int $dropletId
-	 * @return mixed
-	 */
-	public function showDroplet($dropletId) {
-		return $this->connectTo('droplets/' . $dropletId . '/');
-	}
-
-	/**
 	 * New Droplet
 	 * This method returns full information for a specific droplet ID that is passed in the URL.
 	 * @param string $name
@@ -123,8 +115,19 @@ class DigitalOcean {
 	 * @param int $regionId
 	 * @return mixed
 	 */
-	public function newDroplet($name, $sizeId, $imageId, $regionId) {
-		return $this->connectTo('droplets/new?name=' . $name . '&size_id=' . $sizeId . '&image_id=' . $imageId . '&region_id=' . $regionId);
+	public function newDroplet($name, $sizeId, $imageId, $regionId, $sshKeyIds = NULL) {
+		return $this->connectTo('droplets/new?name=' . $name . '&size_id=' . $sizeId . '&image_id=' . $imageId . '&region_id=' . $regionId . 
+			(is_null($sshKeyIds) ? '' : '&ssh_key_ids=' . $sshKeyIds));
+	}
+
+	/**
+	 * Show Droplet
+	 * This method returns full information for a specific droplet ID that is passed in the URL.
+	 * @param int $dropletId
+	 * @return mixed
+	 */
+	public function showDroplet($dropletId) {
+		return $this->connectTo('droplets/' . $dropletId . '/');
 	}
 
 	/**
@@ -184,7 +187,7 @@ class DigitalOcean {
 	 * @return mixed
 	 */
 	public function resetRootPassword($dropletId) {
-		return $this->connectTo('droplets/' . $dropletId . '/reset_root_password/');
+		return $this->connectTo('droplets/' . $dropletId . '/password_reset/');
 	}
 
 	/**
@@ -205,8 +208,8 @@ class DigitalOcean {
 	 * @param string $name
 	 * @return mixed
 	 */
-	public function takeASnapshot($dropletId, $name) {
-		return $this->connectTo('droplets/' . $dropletId . '/snapshot/?name=' . $name);
+	public function takeASnapshot($dropletId, $name = NULL) {
+		return $this->connectTo('droplets/' . $dropletId . '/snapshot/' . (is_null($name) ? '' : '?name=' . $name));
 	}
 
 	/**
@@ -252,6 +255,17 @@ class DigitalOcean {
 	}
 
 	/**
+	 * Rename Droplet
+	 * This method renames the droplet to the specified name.
+	 * @param int $dropletId
+	 * @param string $name
+	 * @return mixed
+	 */
+	public function rename($dropletId, $name) {
+		return $this->connectTo('droplets/' . $dropletId . '/rename/?name=' . $name);
+	}
+
+	/**
 	 * Destroy Droplet
 	 * This method destroys one of your droplets - this is irreversible.
 	 * @param int $dropletId
@@ -287,10 +301,11 @@ class DigitalOcean {
 	/**
 	 * All Images
 	 * This method returns all the available images that can be accessed by your client ID. You will have access to all public images by default, and any snapshots or backups that you have created in your own account.
+	 * @param string $filter
 	 * @return mixed
 	 */
-	public function getImages() {
-		$data = $this->connectTo('images/');
+	public function getImages($filter = 'my_images') {
+		$data = $this->connectTo('images/?filter=' . $filter);
 
 		$return = array();
 		foreach ($data->images as $value) {
@@ -319,6 +334,17 @@ class DigitalOcean {
 		return $this->connectTo('images/' . $imageId . '/destroy/');
 	}
 
+	/**
+	 * Transfer Image
+	 * This method allows you to transfer an image to a specified region.
+	 * @param int $imageId
+	 * @param int $regionId
+	 * @return mixed
+	 */
+	public function transferImage($imageId, $regionId) {
+		return $this->connectTo('images/' . $imageId . '/transfer/?region_id=' . $regionId);
+	}
+
 	########################
 	# SSH Keys
 	########################	
@@ -329,7 +355,23 @@ class DigitalOcean {
 	 * @return mixed
 	 */
 	public function getSSHKeys() {
-		return $this->connectTo('ssh_keys/');
+		$data = $this->connectTo('ssh_keys/');
+
+		$return = array();
+		foreach ($data->ssh_keys as $value) {
+			$return[$value->id] = $value;
+		}
+		return $return;
+	}
+
+	/**
+	 * Add SSH Key
+	 * This method allows you to add a new public SSH key to your account.
+	 * @param int $sshKeyId
+	 * @return mixed
+	 */
+	public function addSSHKey($sshKeyId, $name, $sshKeyPub) {
+		return $this->connectTo('ssh_keys/' . $sshKeyId . '/new/?name=' . $name . '&ssh_key_pub=' . $sshKeyPub);
 	}
 
 	/**
@@ -343,23 +385,13 @@ class DigitalOcean {
 	}
 
 	/**
-	 * Add SSH Key
-	 * This method allows you to add a new public SSH key to your account.
-	 * @param int $sshKeyId
-	 * @return mixed
-	 */
-	public function addSSHKey($sshKeyId) {
-		return $this->connectTo('ssh_keys/' . $sshKeyId . '/add/');
-	}
-
-	/**
 	 * Edit SSH Key
 	 * This method allows you to modify an existing public SSH key in your account.
 	 * @param int $sshKeyId
 	 * @return mixed
 	 */
-	public function editSSHKey($sshKeyId) {
-		return $this->connectTo('ssh_keys/' . $sshKeyId . '/edit/');
+	public function editSSHKey($sshKeyId, $sshKeyPub) {
+		return $this->connectTo('ssh_keys/' . $sshKeyId . '/edit/?ssh_key_pub=' . $sshKeyPub);
 	}
 
 	/**
@@ -377,8 +409,8 @@ class DigitalOcean {
 	########################	
 
 	/**
-	 * Sizes
-	 * Sizes indicate the amount of memory and processors that will be allocated to your droplet on creation.
+	 * All Sizes
+	 * This method returns all the available sizes that can be used to create a droplet.
 	 * @return mixed
 	 */
 	public function getSizes() {
@@ -389,6 +421,135 @@ class DigitalOcean {
 			$return[$value->id] = $value;
 		}
 		return $return;
+	}
+
+	########################
+	# Domains
+	########################	
+
+	/**
+	 * All Domains
+	 * This method returns all of your current domains.
+	 * @return mixed
+	 */
+	public function getDomains() {
+		$data = $this->connectTo('domains/');
+
+		$return = array();
+		foreach ($data->domains as $value) {
+			$return[$value->id] = $value;
+		}
+		return $return;
+	}
+
+	/**
+	 * New Domain
+	 * This method creates a new domain name with an A record for the specified [ip_address].
+	 * @param string $name
+	 * @param string $ipAddress
+	 * @return mixed
+	 */
+	public function newDomain($name, $ipAddress) {
+		return $this->connectTo('domains/new/?name=' . $name . '&ip_address=' . $ipAddress);
+	}
+
+	/**
+	 * Show Domain
+	 * This method returns the specified domain.
+	 * @param string $domainId
+	 * @return mixed
+	 */
+	public function showDomain($domainId) {
+		return $this->connectTo('domains/' . $domainId . '/');
+	}
+
+	/**
+	 * Destroy Domain
+	 * This method deletes the specified domain.
+	 * @param string $domainId
+	 * @return mixed
+	 */
+	public function destroyDomain($domainId) {
+		return $this->connectTo('domains/' . $domainId . '/destroy/');
+	}
+
+	/**
+	 * All Domain Records
+	 * This method returns all of your current domain records.
+	 * @param string $domainId
+	 * @return mixed
+	 */
+	public function getDomainRecords($domainId) {
+		$data = $this->connectTo('domains/' . $domainId . '/records/');
+
+		$return = array();
+		foreach ($data->records as $value) {
+			$return[$value->id] = $value;
+		}
+		return $return;
+	}
+
+	/**
+	 * New Domain Record
+	 * This method creates a new domain record for the specified domain.
+	 * @param string $domainId
+	 * @param string $recordType
+	 * @param string $data
+	 * @param string $name
+	 * @param int $priority
+	 * @param int $port
+	 * @param int $weight
+	 * @return mixed
+	 */
+	public function newDomainRecord($domainId, $recordType, $data, $name = NULL, $priority = NULL, $port = NULL, $weight = NULL) {
+		return $this->connectTo('domains/' . $domainId . '/records/new/?record_type=' . $recordType . '&data=' . $data . 
+			(is_null($name) ? '' : '&name=' . $name) . 
+			(is_null($priority) ? '' : '&priority=' . $priority) . 
+			(is_null($port) ? '' : '&port=' . $port) . 
+			(is_null($weight) ? '' : '&weight=' . $weight));
+	}
+
+	/**
+	 * Show Domain Record
+	 * This method returns the specified domain record.
+	 * @param string $domainId
+	 * @param int $recordId
+	 * @return mixed
+	 */
+	public function showDomainRecord($domainId, $recordId) {
+		return $this->connectTo('domains/' . $domainId . '/records/' . $recordId . '/');
+	}
+
+	/**
+	 * Edit Domain Record
+	 * This method edits an existing domain record.
+	 * @param string $domainId
+	 * @param int $recordId
+	 * @param string $recordType
+	 * @param string $data
+	 * @param string $name
+	 * @param int $priority
+	 * @param int $port
+	 * @param int $weight
+	 * @return mixed
+	 */
+	public function editDomainRecord($domainId, $recordId, $recordType, $data, $name = NULL, $priority = NULL, $port = NULL, $weight = NULL) {
+		return $this->connectTo('domains/' . $domainId . '/records/' . $recordId . '/edit/?record_type=' . $recordType . '&data=' . $data . 
+			(is_null($name) ? '' : '&name=' . $name) . 
+			(is_null($priority) ? '' : '&priority=' . $priority) . 
+			(is_null($port) ? '' : '&port=' . $port) . 
+			(is_null($weight) ? '' : '&weight=' . $weight));
+	}
+
+	/**
+	 * Destroy Domain Record
+	 * This method deletes the specified domain record.
+	 * @param string $domainId
+	 * @param int $recordId
+	 * @return mixed
+	 */
+	public function destroyDomainRecord($domainId, $recordId) {
+		return $this->connectTo('domains/' . $domainId . '/records/' . $recordId . '/destroy/');
 	}
 
 }
