@@ -66,7 +66,7 @@ class DigitalOcean {
 	 * Setter for the API connector class
 	 * @param ApiConnector $apiConnector
 	 */
-	public function setApiConnector($apiConnector) {
+	public function setApiConnector(ApiConnector $apiConnector) {
 		$this->apiConnector = $apiConnector;
 	}
 
@@ -78,6 +78,7 @@ class DigitalOcean {
 	public function __construct($clientId, $apiKey) {
 		$this->clientId = $clientId;
 		$this->apiKey = $apiKey;
+		$this->apiConnector = new ApiConnector();
 	}
 
 	/**
