@@ -11,14 +11,11 @@ Example Usage
 ---------------------
 ```PHP
 require_once('DigitalOcean.class.php');
-$ocean = new \DigitalOceanApi\DigitalOcean('aasBfHZphJSs4UXa855ok','FCjbS7imjTDUyBthEpg6bkq0MDT8hQk3czChU6ghd');
+$ocean = new \DigitalOceanApi\DigitalOcean('client_id_here','api_key_here');
 $droplets = get_object_vars($ocean->getDroplets());
 $i=0;
 $x=0;
 foreach ($droplets as $drops) {
-	//print_r($drops);
-	//echo $drops[0]->name;
-	//echo $drops->status;
 	if (!is_array($drops)) {
 		echo $i . '. Status: ' . $drops . '<br />';
 	} else {
