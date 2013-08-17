@@ -26,3 +26,9 @@ foreach ($droplets as $drops) {
 	$i++;
 }
 ```
+The above will result in something like this:
+```
+0. Status: OK
+1. Name: your-droplet-name
+1. IP: your-droplet-ip
+```
