@@ -566,6 +566,18 @@ class ApiConnector {
 	 * @throws \RuntimeException if no connection methods were found or allow_url_include is disabled.
 	 */
 	function connectToApi($uri) {
+		if(extension_loaded('curl') && function_exists('curl_init') && $ch = @curl_init()){
+			curl_setopt($ch, CURLOPT_URL, $uri);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			
+			$content = curl_exec($ch);
+			curl_close($ch);
+			if($content != null){
+				return $content;
+			}
+		}		
+		
 		if (!ini_get('allow_url_fopen')) {
 			throw new \RuntimeException('Error: allow_url_include disabled!');
 		}
