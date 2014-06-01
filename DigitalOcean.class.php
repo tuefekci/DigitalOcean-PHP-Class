@@ -276,6 +276,17 @@ class DigitalOcean {
 		return $this->connectTo('droplets/' . $dropletId . '/destroy/');
 	}
 
+	/**
+	 * Show Event
+	 * This method returns full information for a specific event ID that is passed in the URL.
+	 * @param int $eventId
+	 * @return mixed
+	 */
+
+	public function showEvent($eventId) {
+		return $this->connectTo('events/' . $eventId);
+	}
+
 	########################
 	# Regions
 	########################
