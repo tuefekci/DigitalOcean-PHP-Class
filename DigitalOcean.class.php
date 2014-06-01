@@ -279,7 +279,7 @@ class DigitalOcean {
 	/**
 	 * Show Event
 	 * This method returns full information for a specific event ID that is passed in the URL.
-	 * @param int $eventtId
+	 * @param int $eventId
 	 * @return mixed
 	 */
 
