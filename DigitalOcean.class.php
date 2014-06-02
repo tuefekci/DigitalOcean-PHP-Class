@@ -158,7 +158,7 @@ class DigitalOcean {
 	 * @return mixed
 	 */
 	public function shutDown($dropletId) {
-		return $this->connectTo('droplets/' . $dropletId . '/shut_down/');
+		return $this->connectTo('droplets/' . $dropletId . '/shutdown/');
 	}
 
 	/**
